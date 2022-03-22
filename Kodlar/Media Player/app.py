@@ -20,8 +20,8 @@ class Window(QWidget):
         palette.setColor(QPalette.Window, Qt.black)
         self.setPalette(palette)
 
-
         self.createPlayer()
+
 
 
     def createPlayer(self):
@@ -45,6 +45,9 @@ class Window(QWidget):
         self.volumeButton.clicked.connect(self.mutedState)
 
         self.volumeSlider = QSlider(Qt.Horizontal)
+        self.volumeSlider.setRange(0, 100)
+        self.volumeSlider.setValue(100)
+        self.volumeSlider.sliderMoved.connect(self.setVolume)
         
 
         horizontalBox = QHBoxLayout()
@@ -104,12 +107,17 @@ class Window(QWidget):
 
     def mutedState(self):
         if self.mediaPlayer.isMuted():
+            self.volumeButton.setIcon(QIcon("./icons/volumeOn.ico"))
             self.setMuted(False)
         else:
+            self.volumeButton.setIcon(QIcon("./icons/volumeOff.ico"))
             self.setMuted(True)
 
     def isMuted(self):
         return  self.mediaPlayer.isMuted()
+
+    def setVolume(self, value):
+        self.mediaPlayer.setVolume(value)
 
 
 app = QApplication(sys.argv)
